@@ -1,6 +1,7 @@
 package com.auctionsysytem.customer;
 
 import com.auctionsysytem.shared.Role;
+import com.auctionsysytem.shared.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,4 +27,6 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

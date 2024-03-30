@@ -4,5 +4,6 @@ public enum Status {
 
     ACTIVE,
     UNVERIFIED,
-    INACTIVE
+    INACTIVE,
+    DELETED
 }
