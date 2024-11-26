@@ -1,4 +1,4 @@
-package com.auctionsysytem;
+package com.auctionsysytem.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
