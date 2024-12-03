@@ -21,15 +21,15 @@ import java.io.IOException;
 public class StorageService {
     private final AmazonS3 clientS3;
 
-    @Value("${application.bucket.name}")
+    @Value("${cloud.application.bucket.name}")
     private String bucketName;
 
-    public String uploadFile(MultipartFile uploadFile) {
+    public boolean uploadFile(MultipartFile uploadFile) {
         String fileName = uploadFile.getOriginalFilename();
         File fileObj = convertMultipartFileToFile(uploadFile);
         clientS3.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
         fileObj.delete();
-        return "File Uploaded: " + fileName;
+        return true;
     }
 
     private File convertMultipartFileToFile(MultipartFile file) {

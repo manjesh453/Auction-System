@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
 
     private final ModelMapper modelMapper;
 
@@ -19,16 +19,16 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public String createCustomer(CustomerDto customerDto) {
-        Customer customer=modelMapper.map(customerDto,Customer.class);
+        Customer customer = modelMapper.map(customerDto, Customer.class);
         customer.setRole(Role.USER);
         customer.setStatus(Status.INACTIVE);
         customerRepo.saveAndFlush(customer);
-        return "Successfully register" ;
+        return "Successfully register";
     }
 
     @Override
     public String updateCustomer(CustomerDto customerDto, Integer cId) {
-        Customer customer=customerRepo.findById(cId).orElseThrow(()->new ResourceNotFoundException("Customer","CUstomerId",cId));
+        Customer customer = customerRepo.findById(cId).orElseThrow(() -> new ResourceNotFoundException("Customer", cId));
         customer.setName(customerDto.getName());
         customer.setEmail(customerDto.getEmail());
         customer.setAddress(customerDto.getAddress());
@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public String deleteCustomer(Integer cId) {
-        Customer customer=customerRepo.findById(cId).orElseThrow(()->new ResourceNotFoundException("Customer","CUstomerId",cId));
+        Customer customer = customerRepo.findById(cId).orElseThrow(() -> new ResourceNotFoundException("Customer", cId));
         customer.setStatus(Status.DELETED);
         customerRepo.save(customer);
         return "Successfully deleted";
@@ -47,13 +47,19 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public CustomerDto getCustomerById(Integer cId) {
-        Customer customer=customerRepo.findById(cId).orElseThrow(()->new ResourceNotFoundException("Customer","CUstomerId",cId));
-        return modelMapper.map(customer,CustomerDto.class);
+        Customer customer = customerRepo.findById(cId).orElseThrow(() -> new ResourceNotFoundException("Customer", cId));
+        return modelMapper.map(customer, CustomerDto.class);
     }
 
     @Override
     public List<CustomerDto> getAllCustomer() {
-        List<Customer>customers=customerRepo.findAll();
-        return customers.stream().map(li->modelMapper.map(li,CustomerDto.class)).toList();
+        List<Customer> customers = customerRepo.findAll();
+        return customers.stream().map(li -> modelMapper.map(li, CustomerDto.class)).toList();
+    }
+
+    @Override
+    public List<CustomerDto> getCustomerByStatus(Status status) {
+        List<Customer> customers = customerRepo.getCustomersByStatus(status);
+        return customers.stream().map(li -> modelMapper.map(li, CustomerDto.class)).toList();
     }
 }
