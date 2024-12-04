@@ -9,6 +9,4 @@ public class RequestProductDto {
     private String productName;
     private String productDescription;
     private String productPrice;
-    private String productImage;
-
 }

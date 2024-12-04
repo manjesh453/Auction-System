@@ -13,20 +13,20 @@ import lombok.*;
 @NoArgsConstructor
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer cId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer customerId;
 
-    private String name;
+    private String customerName;
 
-    private String email;
+    private String customerEmail;
 
-    private String password;
+    private String customerPassword;
 
-    private String address;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String customerAddress;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Role customerRole;
+
+    @Enumerated(EnumType.STRING)
+    private Status customerStatus;
 }

@@ -55,8 +55,8 @@ public class StorageService {
         }
     }
 
-    public String deleteFile(String fileName){
+    public boolean deleteFile(String fileName){
         clientS3.deleteObject(bucketName, fileName);
-        return "File deleted: " + fileName;
+        return true;
     }
 }

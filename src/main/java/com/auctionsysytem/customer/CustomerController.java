@@ -1,5 +1,6 @@
 package com.auctionsysytem.customer;
 
+import com.auctionsysytem.shared.Role;
 import com.auctionsysytem.shared.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +42,15 @@ public class CustomerController {
     @GetMapping("/getCustomerByStatus/{status}")
     public List<CustomerDto> getCustomerByStatus(@PathVariable Status status) {
         return customerService.getCustomerByStatus(status);
+    }
+
+    @GetMapping("/changeCustomerStatus/{cId}")
+    public String changeCustomerStatus(@RequestBody Status status, @PathVariable Integer cId) {
+        return customerService.changeCustomerStatus(cId, status);
+    }
+
+    @GetMapping("/changeCustomerRole/{cId}")
+    public String changeCustomerRole(@RequestBody Role role, @PathVariable Integer cId) {
+        return customerService.changeCustomerRole(cId, role);
     }
 }

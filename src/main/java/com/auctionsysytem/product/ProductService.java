@@ -9,7 +9,7 @@ public interface ProductService {
 
     String createProduct(MultipartFile image, RequestProductDto requestProductDto);
 
-    String updateProduct(RequestProductDto requestProductDto, Integer pId);
+    String updateProductDetails(RequestProductDto requestProductDto, Integer pId);
 
     ResponseProductDto getProductByProductId(Integer pId);
 
@@ -18,4 +18,10 @@ public interface ProductService {
     List<ResponseProductDto> getAllProductsByStatus(Status status);
 
     String changeProductStatus(Status status,Integer pId);
+
+    String updateProductImage(Integer pId, MultipartFile image);
+
+    String deleteProduct(Integer pId);
+
+    byte[] previewImage(Integer pId);
 }
