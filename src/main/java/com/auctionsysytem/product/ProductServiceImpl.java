@@ -1,5 +1,6 @@
 package com.auctionsysytem.product;
 
+import com.auctionsysytem.customer.CustomerRepo;
 import com.auctionsysytem.exception.ResourceNotFoundException;
 import com.auctionsysytem.s3bucket.service.StorageService;
 import com.auctionsysytem.shared.Status;
@@ -19,15 +20,18 @@ public class ProductServiceImpl implements ProductService {
     private final StorageService imageService;
     private final ProductRepo productRepository;
     private final ModelMapper modelMapper;
+    private final CustomerRepo customerRepository;
 
     @Override
     public String createProduct(MultipartFile image, RequestProductDto requestProductDto) {
-        log.info("Product is"+requestProductDto.toString());
+        log.info("Product is" + requestProductDto.toString());
         if (imageService.uploadFile(image)) {
             Product product = modelMapper.map(requestProductDto, Product.class);
             product.setProductImage(image.getOriginalFilename());
             product.setStatus(Status.UNVERIFIED);
             product.setHighestBet("0");
+            product.setProductOwner(customerRepository.findById(requestProductDto.getProductOwnerId()).
+                    orElseThrow(() -> new ResourceNotFoundException("Customer", requestProductDto.getProductOwnerId())));
             productRepository.save(product);
             return "Product has been successfully uploaded";
         } else {
