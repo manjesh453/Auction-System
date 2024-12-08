@@ -1,5 +1,6 @@
 package com.auctionsysytem.product;
 
+import com.auctionsysytem.customer.Customer;
 import com.auctionsysytem.customer.CustomerRepo;
 import com.auctionsysytem.exception.ResourceNotFoundException;
 import com.auctionsysytem.s3bucket.service.StorageService;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
             Product product = modelMapper.map(requestProductDto, Product.class);
             product.setProductImage(image.getOriginalFilename());
             product.setStatus(Status.UNVERIFIED);
-            product.setHighestBet("0");
+            product.setHighestBet(0);
             product.setProductOwner(customerRepository.findById(requestProductDto.getProductOwnerId()).
                     orElseThrow(() -> new ResourceNotFoundException("Customer", requestProductDto.getProductOwnerId())));
             productRepository.save(product);
@@ -106,5 +108,21 @@ public class ProductServiceImpl implements ProductService {
     public byte[] previewImage(Integer pId) {
         Product product = productRepository.findById(pId).orElseThrow(() -> new ResourceNotFoundException("Product", pId));
         return imageService.downloadFile(product.getProductImage());
+    }
+
+    @Override
+    public String startAuction(AuctionDto auctionDto) {
+        Customer customer = customerRepository.findById(auctionDto.getCId()).orElseThrow(() -> new ResourceNotFoundException("Customer", auctionDto.getCId()));
+        Product product = productRepository.findById(auctionDto.getPId()).orElseThrow(() -> new ResourceNotFoundException("Product", auctionDto.getPId()));
+        if (product.getProductOwner() == customer) {
+            product.setDateToStartAuction(new Date());
+            product.setDateToFinishAuction(dateToAdd(auctionDto.getDayToEndAuction()));
+            return "Auction for the " + product.getProductName() + " has been started";
+        }
+        return "Sorry you are not the owner of this product";
+    }
+
+    private Date dateToAdd(Integer dateToAdd) {
+        return new Date(new Date().getTime() + dateToAdd * 24 * 60 * 60 * 1000);
     }
 }

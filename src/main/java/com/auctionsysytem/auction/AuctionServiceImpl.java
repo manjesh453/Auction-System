@@ -6,6 +6,8 @@ import com.auctionsysytem.product.ProductRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class AuctionServiceImpl implements AuctionService {
@@ -22,9 +24,13 @@ public class AuctionServiceImpl implements AuctionService {
         if (product.getHighestBet() > amount && product.getProductPrice() > amount) {
             return "Bet amount should be more than current product price";
         } else {
-            product.setProductPrice(amount);
-            productRepository.save(product);
-            return "Congratulations you have made bet higher for " + product.getProductName();
+            if (product.getDateToFinishAuction().before(new Date())) {
+                product.setProductPrice(amount);
+                productRepository.save(product);
+                return "Congratulations you have made bet higher for " + product.getProductName();
+            } else {
+                return "Sorry the time has exceed to make bet for " + product.getProductName();
+            }
         }
     }
 }

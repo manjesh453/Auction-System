@@ -17,11 +17,13 @@ public interface ProductService {
 
     List<ResponseProductDto> getAllProductsByStatus(Status status);
 
-    String changeProductStatus(Status status,Integer pId);
+    String changeProductStatus(Status status, Integer pId);
 
     String updateProductImage(Integer pId, MultipartFile image);
 
     String deleteProduct(Integer pId);
 
     byte[] previewImage(Integer pId);
+
+    String startAuction(AuctionDto auctionDto);
 }

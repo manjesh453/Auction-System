@@ -32,6 +32,14 @@ public class Product {
     @Column(name = "last_modified_date")
     private Date lastModifiedDate = new Date();
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Customer productOwner;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Customer productBuyer;
+
+    private Date dateToStartAuction;
+
+    private Date dateToFinishAuction;
+
 }
