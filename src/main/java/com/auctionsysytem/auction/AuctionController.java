@@ -11,7 +11,7 @@ public class AuctionController {
     private final AuctionService auctionService;
 
     @PostMapping("/makeAuction/{pId}")
-    public String makeAuction(@RequestBody float betAmount, @PathVariable Integer pId) {
-        return auctionService.makeAuction(betAmount, pId);
+    public String makeAuction(@RequestBody AuctionDto auctionDto, @PathVariable Integer pId) {
+        return auctionService.makeAuction(auctionDto, pId);
     }
 }

@@ -6,5 +6,6 @@ public enum Status {
     UNVERIFIED,
     INACTIVE,
     DELETED,
-    SOLD
+    SOLD,
+    HOLD
 }

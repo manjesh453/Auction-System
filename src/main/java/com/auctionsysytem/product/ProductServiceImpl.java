@@ -115,6 +115,7 @@ public class ProductServiceImpl implements ProductService {
         Customer customer = customerRepository.findById(auctionDto.getCId()).orElseThrow(() -> new ResourceNotFoundException("Customer", auctionDto.getCId()));
         Product product = productRepository.findById(auctionDto.getPId()).orElseThrow(() -> new ResourceNotFoundException("Product", auctionDto.getPId()));
         if (product.getProductOwner() == customer) {
+            product.setStatus(Status.ACTIVE);
             product.setDateToStartAuction(new Date());
             product.setDateToFinishAuction(dateToAdd(auctionDto.getDayToEndAuction()));
             return "Auction for the " + product.getProductName() + " has been started";
@@ -125,4 +126,5 @@ public class ProductServiceImpl implements ProductService {
     private Date dateToAdd(Integer dateToAdd) {
         return new Date(new Date().getTime() + dateToAdd * 24 * 60 * 60 * 1000);
     }
+
 }

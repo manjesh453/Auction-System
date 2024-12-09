@@ -40,6 +40,9 @@ public class Product {
 
     private Date dateToStartAuction;
 
+    @Version
+    private Long version;
+
     private Date dateToFinishAuction;
 
 }
