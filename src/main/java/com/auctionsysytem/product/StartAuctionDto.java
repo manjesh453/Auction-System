@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AuctionDto {
+public class StartAuctionDto {
     private Integer cId;
     private Integer pId;
     private Integer dayToEndAuction;

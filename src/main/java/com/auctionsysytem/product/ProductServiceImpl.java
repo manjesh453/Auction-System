@@ -111,13 +111,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String startAuction(AuctionDto auctionDto) {
-        Customer customer = customerRepository.findById(auctionDto.getCId()).orElseThrow(() -> new ResourceNotFoundException("Customer", auctionDto.getCId()));
-        Product product = productRepository.findById(auctionDto.getPId()).orElseThrow(() -> new ResourceNotFoundException("Product", auctionDto.getPId()));
+    public String startAuction(StartAuctionDto startAuctionDto) {
+        Customer customer = customerRepository.findById(startAuctionDto.getCId()).orElseThrow(() -> new ResourceNotFoundException("Customer", startAuctionDto.getCId()));
+        Product product = productRepository.findById(startAuctionDto.getPId()).orElseThrow(() -> new ResourceNotFoundException("Product", startAuctionDto.getPId()));
         if (product.getProductOwner() == customer) {
             product.setStatus(Status.ACTIVE);
             product.setDateToStartAuction(new Date());
-            product.setDateToFinishAuction(dateToAdd(auctionDto.getDayToEndAuction()));
+            product.setDateToFinishAuction(dateToAdd(startAuctionDto.getDayToEndAuction()));
             return "Auction for the " + product.getProductName() + " has been started";
         }
         return "Sorry you are not the owner of this product";

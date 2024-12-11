@@ -25,5 +25,5 @@ public interface ProductService {
 
     byte[] previewImage(Integer pId);
 
-    String startAuction(AuctionDto auctionDto);
+    String startAuction(StartAuctionDto startAuctionDto);
 }

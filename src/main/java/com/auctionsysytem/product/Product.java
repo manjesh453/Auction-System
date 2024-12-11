@@ -16,12 +16,12 @@ import java.util.Date;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productId;
-    private String productName;
+    private Integer productId; private String productName;
     private String productDescription;
     private float productPrice;
     private String productImage;
     private float highestBet;
+
     private Status status;
 
     @Column(name = "created_date", updatable = false)
