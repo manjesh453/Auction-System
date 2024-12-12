@@ -1,5 +1,7 @@
 package com.auctionsysytem.auction;
 
+import com.auctionsysytem.cart.CartRepo;
+import com.auctionsysytem.cart.Carts;
 import com.auctionsysytem.customer.Customer;
 import com.auctionsysytem.customer.CustomerRepo;
 import com.auctionsysytem.exception.ResourceNotFoundException;
@@ -16,6 +18,7 @@ import java.util.Date;
 public class AuctionServiceImpl implements AuctionService {
     private final ProductRepo productRepository;
     private final CustomerRepo customerRepository;
+    private final CartRepo cartRepo;
 
 
     @Override
@@ -26,15 +29,21 @@ public class AuctionServiceImpl implements AuctionService {
 
     private String checkBetAmount(Product product, AuctionDto auctionDto) {
         Customer customer = customerRepository.findById(auctionDto.getCId()).orElseThrow(() -> new ResourceNotFoundException("Customer", auctionDto.getCId()));
-        if (product.getStatus() == Status.ACTIVE ) {
+        if (product.getStatus() == Status.ACTIVE) {
             if (product.getHighestBet() > auctionDto.getBetAmount() && product.getProductPrice() > auctionDto.getBetAmount()) {
                 return "Bet amount should be more than current product price";
-            } else if (product.getProductBuyer()==customer) {
+            } else if (product.getProductBuyer() == customer) {
                 return "You have already the highest better of this product";
             } else {
                 if (product.getDateToFinishAuction().before(new Date())) {
                     product.setProductPrice(auctionDto.getBetAmount());
                     productRepository.save(product);
+                    Carts carts = cartRepo.findByProduct_ProductId(product.getProductId());
+                    if (carts == null) {
+                        Carts cart = new Carts();
+                        cart.setProduct(product);
+                        cartRepo.save(cart);
+                    }
                     return "Congratulations you have made bet higher for " + product.getProductName();
                 } else {
                     return "Sorry the time has exceed to make bet for " + product.getProductName();

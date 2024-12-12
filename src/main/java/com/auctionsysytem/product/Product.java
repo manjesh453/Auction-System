@@ -1,5 +1,6 @@
 package com.auctionsysytem.product;
 
+import com.auctionsysytem.cart.Carts;
 import com.auctionsysytem.customer.Customer;
 import com.auctionsysytem.shared.Status;
 import jakarta.persistence.*;
@@ -37,6 +38,9 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Customer productBuyer;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Carts cart;
 
     private Date dateToStartAuction;
 
